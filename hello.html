@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Hello from Flask</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#b_hi').click(function () {
+        // $('#hi').append('hi');
+        $.ajax({
+          url: 'd',
+          data: '1',
+          success: function (data) {
+            var my_id = ['#', data['id']].join('');
+            $(my_id).empty();
+            $.each(data['input'], function (index, value) {
+              // debugger
+              if (!(index === 0)) {
+                $(my_id).append("<br>");
+              }
+              var my_name = value['name'];
+              var my_type = value['type'];
+              if (my_type === "text") {
+                $(my_id).append(`<input type=\"text\" name=\"${my_name}\">`);
+              } else if (my_type === "checkbox") {
+                $(my_id).append(`<input type=\"checkbox\" name=\"${my_name}\">`);
+              } else if (my_type === "number") {
+                $(my_id).append(`<input type=\"number\" name=\"${my_name}\">`);
+              } else if (my_type === "select") {
+                var my_html = "";
+                my_html += (`<select name=\"${my_name}\">`);
+                for (const my_key in value['options']) {
+                  my_display = value['options'][my_key];
+                  my_html += (`<option value=\"${my_key}\">${my_display}</option>`);
+                }
+                my_html += (`</select>`);
+                $(my_id).append(my_html);
+              };
+            })
+          }
+        });
+      }
+      )
+    }
+    );
+  </script>
+</head>
+
+<body>
+  <h1>Hello, World!</h1>
+
+  <div id="hi"></div>
+  <label for="cars">Choose a car:</label>
+  <select id="cars" name="cars">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="fiat">Fiat</option>
+    <option value="audi">Audi</option>
+  </select>
+  <input id="b_hi" type="submit">
+</body>
+
+</html>
